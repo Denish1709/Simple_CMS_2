@@ -3,10 +3,10 @@
 $database = connectToDB();
 
 
-$sql = 'SELECT * FROM users';
+$sql = 'SELECT * FROM posts';
 $query = $database->prepare($sql);
 $query->execute();
-$todo = $query->fetchAll();
+$posts = $query->fetchAll();
 
 require "parts/header.php";
 ?>
@@ -15,16 +15,18 @@ require "parts/header.php";
         <h1 class="h1">Add New Post</h1>
     </div>
     <div class="card mb-2 p-4">
-        <form>
+        <form method="POST" action="/manage/posts/add">
+            <?php require "parts/message_error.php";?>
             <div class="mb-3">
                 <label for="post-title" class="form-label">Title</label>
-                <input type="text" class="form-control" id="post-title" />
+                <input type="text" class="form-control" id="post-title" name="title" />
             </div>
             <div class="mb-3">
                 <label for="post-content" class="form-label">Content</label>
                 <textarea
                     class="form-control"
                     id="post-content"
+                    name="content"
                     rows="10"
                 ></textarea>
             </div>

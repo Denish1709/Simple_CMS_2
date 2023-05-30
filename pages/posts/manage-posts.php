@@ -3,7 +3,7 @@
 $database = connectToDB();
 
 
-$sql = 'SELECT * FROM users';
+$sql = 'SELECT * FROM posts';
 $query = $database->prepare($sql);
 $query->execute();
 $todo = $query->fetchAll();

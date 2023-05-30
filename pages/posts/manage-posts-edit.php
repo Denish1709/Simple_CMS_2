@@ -1,12 +1,25 @@
 <?php
 
-$database = connectToDB();
+if ( isset( $_GET['id'] ) ) {
+    $database = connectToDB();
 
+    $sql = "SELECT * FROM posts WHERE id = :id";
+    $query = $database->prepare($sql);
+    $query->execute([
+            'id' => $_GET['id']
+    ]);
 
-$sql = 'SELECT * FROM users';
-$query = $database->prepare($sql);
-$query->execute();
-$todo = $query->fetchAll();
+    $post = $query->fetch();
+
+    if ( !$post ) {
+        header("Location: /manage/posts");
+        exit;
+    }
+
+} else {
+    header("Location: /manage-posts");
+    exit;
+}
 
 require "parts/header.php";
 ?>
@@ -15,19 +28,20 @@ require "parts/header.php";
         <h1 class="h1">Edit Post</h1>
     </div>
     <div class="card mb-2 p-4">
-        <form>
+        <form method="POST" action="/posts/edit">
             <div class="mb-3">
                 <label for="post-title" class="form-label">Title</label>
                 <input
                     type="text"
                     class="form-control"
                     id="post-title"
-                    value="Post 1"
+                    name="title"
+                    value="<?= $post['title']; ?>"
                 />
             </div>
             <div class="mb-3">
                 <label for="post-content" class="form-label">Content</label>
-                <textarea class="form-control" id="post-content" rows="10">
+                <textarea class="form-control" id="post-content" name="content" rows="10"><?= $post['content']; ?>
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris purus risus, euismod ac tristique in, suscipit quis quam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Vestibulum eget dapibus nibh. Pellentesque nec maximus odio. In pretium diam metus, sed suscipit neque porttitor vitae. Vestibulum a mattis eros. Integer fermentum arcu dolor, nec interdum sem tincidunt in. Cras malesuada a neque ut sodales. Nulla facilisi.
 
 Phasellus sodales arcu quis felis sollicitudin vehicula. Aliquam viverra sem ac bibendum tincidunt. Donec pulvinar id purus sagittis laoreet. Sed aliquet ac nisi vehicula rutrum. Proin non risus et erat rhoncus aliquet. Nam sollicitudin facilisis elit, a consequat arcu placerat eu. Pellentesque euismod et est quis faucibus.
@@ -40,10 +54,16 @@ Curabitur sit amet nisl feugiat, efficitur nibh et, efficitur ex. Morbi nec frin
                 <label for="post-content" class="form-label">Status</label>
                 <select class="form-control" id="post-status" name="status">
                     <option value="review">Pending for Review</option>
-                    <option value="publish">Publish</option>
+                    <option value="publish"<?php
+                    if ( $post['post-status'] === 'Pending Review' ) {
+                        echo 'selected';
+                    }
+                    ?>>Publish</option>
+                    <option value="publish" <?= $post['post-status'] === 'Publish' ? 'selected' : ''; ?>>Publish</option>
                 </select>
             </div>
             <div class="text-end">
+                <input type="hidden" name="id" value="<?= $post['id']; ?>" />
                 <button type="submit" class="btn btn-primary">Update</button>
             </div>
         </form>

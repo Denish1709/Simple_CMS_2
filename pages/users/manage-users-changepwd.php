@@ -1,5 +1,12 @@
 <?php
 
+// check if the current user is an admin or not
+if ( !isAdmin() ) {
+    // if current user is not an admin, redirect to dashboard
+    header("Location: /dashboard");
+    exit;
+}
+
 $database = connectToDB();
 
 
@@ -12,22 +19,11 @@ require "parts/header.php";
 ?>
 <div class="container mx-auto my-5" style="max-width: 700px;">
     <div class="d-flex justify-content-between align-items-center mb-2">
-        <h1 class="h1">Add New User</h1>
+        <h1 class="h1">Change Password</h1>
     </div>
     <div class="card mb-2 p-4">
-        <form>
-            <div class="mb-3">
-                <div class="row">
-                    <div class="col">
-                        <label for="name" class="form-label">Name</label>
-                        <input type="text" class="form-control" id="name" />
-                    </div>
-                    <div class="col">
-                        <label for="email" class="form-label">Email</label>
-                        <input type="email" class="form-control" id="email" />
-                    </div>
-                </div>
-            </div>
+        <form method="POST" action="user/changepwd">
+            <?php require "parts/message_error.php";?>
             <div class="mb-3">
                 <div class="row">
                     <div class="col">
@@ -41,22 +37,17 @@ require "parts/header.php";
                         <input
                             type="password"
                             class="form-control"
-                            id="confirm-password"
+                            id="confirm_password"
                         />
                     </div>
                 </div>
             </div>
-            <div class="mb-3">
-                <label for="role" class="form-label">Role</label>
-                <select class="form-control" id="role">
-                    <option value="">Select an option</option>
-                    <option value="user">User</option>
-                    <option value="editor">Editor</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Add</button>
+                <input type="hidden" name="id" value="<?= $todo['id']; ?>"/>
+
+                <button type="submit" class="btn btn-primary">
+                    Change Password
+                </button>
             </div>
         </form>
     </div>
