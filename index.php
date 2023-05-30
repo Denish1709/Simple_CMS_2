@@ -17,6 +17,15 @@ switch ($path) {
     case 'auth/signup':
         require "includes/auth/signup.php";
         break;
+    case 'posts/add':
+        require "includes/posts/add.php";
+        break;
+    case 'posts/edit':
+        require "includes/posts/edit.php";
+        break;
+    case 'posts/delete':
+        require "includes/posts/delete.php";
+        break;
     case 'dashboard': //condition
         require "pages/dashboard.php";
         break;
@@ -24,28 +33,29 @@ switch ($path) {
         require "pages/login.php";
         break;
     case 'logout': //condition
+        $_SESSION["title"] = "Add New User";
         require "pages/logout.php";
         break;
     case 'manage-posts': //condition
-        require "pages/manage-posts.php";
+        require "pages/posts/manage-posts.php";
         break;
     case 'manage-posts-add': //condition
-        require "pages/manage-posts-add.php";
+        require "pages/posts/manage-posts-add.php";
         break;
     case 'manage-posts-edit': //condition
-        require "pages/manage-posts-edit.php";
+        require "pages/posts/manage-posts-edit.php";
         break;
     case 'manage-users': //condition
-        require "pages/manage-users.php";
+        require "pages/users/manage-users.php";
         break;
     case 'manage-users-add': //condition
-        require "pages/manage-users-add.php";
+        require "pages/users/manage-users-add.php";
         break;
     case 'manage-users-changepwd': //condition
-        require "pages/manage-users-changepwd.php";
+        require "pages/users/manage-users-changepwd.php";
         break;
     case 'manage-users-edit': //condition
-        require "pages/manage-users-edit.php";
+        require "pages/users/manage-users-edit.php";
         break;
     case 'signup':
         require "pages/signup.php";

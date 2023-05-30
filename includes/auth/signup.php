@@ -2,7 +2,6 @@
 
 $database = connectToDB();
 
-
 $sql = 'SELECT * FROM users';
 $query = $database->prepare($sql);
 $query->execute();
@@ -16,7 +15,7 @@ $password = $_POST["password"];
 $confirm_password = $_POST["confirm_password"];
 
 // 1. make sure all fields are not empty
-if ( empty( $name ) || empty ( $email ) || empty ( $password ) || empty ( $confirm_password ) ) {
+if ( empty( $name ) || empty ( $email ) || empty ( $password ) || empty ( $confirm_password ) || empty( $role )) {
     $error =  'All fields are required';
 } else if ( $password !== $confirm_password ){
     // 2. make sure password is match
@@ -26,8 +25,8 @@ if ( empty( $name ) || empty ( $email ) || empty ( $password ) || empty ( $confi
     $error =  "Your password must be at least 8 character";
 } else {
     // recipe
-    $sql = "INSERT INTO users ( `name`, `email`, `password` )
-        VALUES (:name, :email, :password)";
+    $sql = "INSERT INTO users ( `name`, `email`, `password`, `role`)
+        VALUES (:name, :email, :password, :role)";
     // prepare
     $query = $database->prepare( $sql );
     // execute
@@ -37,7 +36,7 @@ if ( empty( $name ) || empty ( $email ) || empty ( $password ) || empty ( $confi
         'password' => password_hash( $password, PASSWORD_DEFAULT ) //convert user's password to random string
     ]);
 
-    // redirent user back to /
+    // redirect user back to /
     header("Location: /login");
     exit;
 }

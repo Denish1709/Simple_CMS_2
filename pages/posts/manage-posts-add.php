@@ -1,13 +1,5 @@
 <?php
 
-$database = connectToDB();
-
-
-$sql = 'SELECT * FROM posts';
-$query = $database->prepare($sql);
-$query->execute();
-$posts = $query->fetchAll();
-
 require "parts/header.php";
 ?>
 <div class="container mx-auto my-5" style="max-width: 700px;">
@@ -15,7 +7,7 @@ require "parts/header.php";
         <h1 class="h1">Add New Post</h1>
     </div>
     <div class="card mb-2 p-4">
-        <form method="POST" action="/manage/posts/add">
+        <form method="POST" action="/posts/add">
             <?php require "parts/message_error.php";?>
             <div class="mb-3">
                 <label for="post-title" class="form-label">Title</label>
